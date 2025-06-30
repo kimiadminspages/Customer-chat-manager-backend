@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>KIMI Customer Service Chat - Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+            /* Disable text selection */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --warning-color: #ff9e00;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+--customer-message: linear-gradient(
+  180deg,
+  #046307,
+  #046307,
+  #046307,
+  #046307
+);
+            --admin-message: linear-gradient(
+  180deg,
+  #0C090A,
+  #000000,
+  #0C090A,
+  #0C090A,
+  #000000,
+  #0C090A
+);
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --admin-sidebar-width: 420px;
+        }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: url('https://img.freepik.com/premium-vector/blue-curve-frame-template_53876-174347.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740') no-repeat center center fixed; /*https://w0.peakpx.com/wallpaper/508/606/HD-wallpaper-whatsapp-l-background-doodle-pattern-patterns.jpg,,,incode backu-up url comment */
+            background-size: cover;
+            color: var(--dark-color);
+            min-height: 100vh;
+            font-family: 'Poppins', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+
+        }
+        
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.1);
+            min-height: 100vh;
+            padding: 0px;
+        }
+        
+        .container { 
+            max-width: 100%; 
+            margin: 0 auto; 
+            padding: 20px; 
+            position: fixed;
+        }
+        
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border: 0px solid rgba(0,0,0,0.1);
+            border-radius: 20px;
+            background:url('https://img.freepik.com/free-photo/red-light-round-podium-black-background-mock-up_43614-950.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 50px;
+            width: 50px;
+            object-fit: cover;
+            margin-right: 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background:transparent;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .admin-logo {
+            background-color: var(--primary-color);
+            padding: 5px;
+            border-radius: 8px;
+        }
+        
+        .app-title {
+            font-size: 24px;
+            font-weight: 999;
+            margin: auto;
+            color: #fdbd01;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 900;
+            margin-left: 1px;
+            text-align: center;
+        }
+        
+        .status-live {
+            background:white;
+            color: green;
+            border:2px solid green;
+        }
+        
+        .status-offline {
+            background: white;
+            color: red;
+            border: 2px solid red;
+        }
+        
+        .chat-box { 
+            background:url('https://img.freepik.com/premium-photo/green-watercolor-background-document-1_1259374-238.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border-radius: 12px; 
+            box-shadow: none; 
+            height: 65vh; 
+            overflow-y: auto; 
+            padding:12px; 
+            margin-bottom: 50px;
+            background-color: rgba(255, 255, 255, 0.0);
+            font-size: 10px;
+            font-weight: 999;
+        }
+        
+        .message { 
+            margin-bottom: 10px; 
+            padding: 12px; 
+            border-radius: 12px; 
+            max-width: 75%; 
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        .message:hover {
+            transform: translateY(-2px);
+        }
+        
+        .customer { 
+    background: url('https://img.freepik.com/free-photo/smooth-green-background_53876-108464.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740'); 
+    background-size: 100% 100%; /* or contain, or specific dimensions */
+    background-repeat: no-repeat; /* prevents tiling */
+    background-position: center; /* centers the image */
+    margin-left: auto;
+    border-top-right-radius: 1px;
+    color: #F8F6F0;
+}
+        
+        .admin { 
+    background: url('https://img.freepik.com/free-vector/seamless-gold-rhombus-grid-pattern-black-background_53876-97589.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740'); 
+    background-size: 100% 100%; /* or contain, or specific dimensions */
+    background-repeat: no-repeat; /* prevents tiling */
+    background-position: center; /* centers the image */
+            margin-right: auto;
+            border-top-left-radius: 1px;
+            color: #FFB2D0;
+        }
+        
+        .message-deleted {
+            opacity: 1;
+        }
+        
+        .message-deleted-text {
+            opacity: 1;
+            font-style: italic;
+            color: #666;
+            font-size: 8px;
+            font-weight: 900;
+        }
+        
+        .input-area { 
+            display: flex; 
+            gap: 4px; 
+            align-items: center;
+        }
+        
+        input, textarea { 
+            flex: 1; 
+            padding: 12px 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            font-family: 'Poppins', sans-serif;
+            font-size: 10px;
+            transition: border-color 0.3s ease;
+            overflow-y: auto;
+            max-height:30px ;
+            font-weight:900;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: 2px solid #16F529;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 999;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-danger {
+            background: var(--danger-color);
+            border:2px solid #00FF00;
+        }
+        
+        .btn-danger:hover {
+            background: #d3165e;
+            border:2px solid #FFFF33;
+        }
+        
+        .btn-warning {
+            background: var(--warning-color);
+            border:2px solid #EB5406;
+        }
+        
+        .btn-warning:hover {
+            background: #e68f00;
+            border:2px solid #FF6700;
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            border:2px solid #FF0000;
+        }
+        
+        .btn-success:hover {
+            background: #3ab8d8;
+            border: 2px solid #FA2A55;
+        }
+        
+        .file-input { 
+            display: none; 
+        }
+        
+        .file-label { 
+            padding: 8px; 
+            background:url('https://img.freepik.com/premium-photo/price-tag-text-box-3d-illustration_115990-7734.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740'); 
+            color: #fdbd01; 
+            border-radius: 8px; 
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background-size: 100% 100%;
+        }
+        
+        .file-label:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .file-name { 
+            margin-left: 10px; 
+            font-size: 12px; 
+            color: var(--dark-color);
+        }
+        
+        .timestamp { 
+            font-size: 5px; 
+            color: white; 
+            text-align: right; 
+            margin-top: 5px;
+        }
+        
+        .user-id {
+            font-size: 10px;
+            color: #888;
+            margin-top: 3px;
+            font-weight: 999;
+        }
+        
+        img, video { 
+            max-width: 100%; 
+            max-height: 200px; 
+            border-radius: 8px; 
+            margin-top: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background:black;
+    background-image: url('https://img.freepik.com/premium-photo/blue-vertical-background-social-media-story-poster-banner-ads-various-design-works_7954-61892.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fdbd01;
+            margin: 0;
+        }
+        
+        .admin-chat-container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            height: calc(100vh - 150px);
+        }
+        
+        .admin-user-list {
+            width: 300px;
+            border-right: 1px solid #eee;
+            padding-right: 15px;
+            overflow-y: auto;
+        }
+        
+        .admin-chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .admin-chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #fdbd01;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            max-height: 30%;
+        }
+        
+        .admin-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .admin-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-menu li {
+            margin-bottom: 8px;
+        }
+        
+        .admin-menu a {
+            display: block;
+            padding: 10px 15px;
+            background: var(--light-color);
+            border-radius: 8px;
+            color:#FF6700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-menu a:hover {
+            background: var(--primary-color);
+            color: #FA2A55;
+        }
+        
+        .admin-menu a i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .auto-reply-option {
+            background: var(--light-color);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .auto-reply-option:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .auto-reply-option i {
+            margin-right: 10px;
+        }
+        
+        .user-list {
+            max-height: 100%;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .user-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+        
+        .user-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .user-item:hover {
+            background: var(--light-color);
+        }
+        
+        .user-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .user-item.blocked {
+            background-color: #ffebee;
+            border-left: 3px solid var(--danger-color);
+        }
+        
+        .user-item.deleted {
+            background-color: #f5f5f5;
+            border-left: 3px solid #9e9e9e;
+        }
+        
+        .user-id-badge {
+            font-size: 10px;
+            background: var(--accent-color);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+        
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 1.4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background: #f1f1f1;
+            border-radius: 20px;
+            width: fit-content;
+            margin-bottom: 15px;
+            margin-right: auto;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background:url('https://img.freepik.com/free-vector/video-game-controls-frame-neon-style-brick-wall_24908-58914.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+            background-size: 100% 100%;
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: modalFadeIn 0.3s ease;
+            margin: 20px;
+            filter: drop-shadow(0 0 5px gold) 
+            drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+    transition: transform 0.01s ease-out;
+    pointer-events: default;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            align-content: center;
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 900;
+            margin: 0;
+            color: #FA2A55;
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color:#16F529;
+            border-radius:30% ;
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Admin Controls */
+        .admin-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-menu-btn {
+            position: relative;
+        }
+        
+        .admin-menu-dropdown {
+            position: absolute;
+            top: 50%;
+            left: -50%;
+            background:url('https://img.freepik.com/free-vector/abstract-realistic-technology-particle-background_52683-33064.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.9);
+            padding: 10px;
+            z-index: 10;
+            display: none;
+            width: 100px;
+            font-size: 8px;
+            background-size: 100% 100%;
+            border:2px solid #32CD32;
+        }
+        
+        .admin-menu-dropdown.show {
+            display: block;
+        }
+        
+        .admin-menu-dropdown button {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 2px;
+            padding: 8px 12px;
+            background:url('https://img.freepik.com/free-vector/realistic-neon-lights-background_23-2148916523.jpg?ga=GA1.1.1222501261.1742927237&semt=ais_hybrid&w=740');
+            border: 2px solid #FF1493;
+            border-radius: 6px;
+            font-size: 5px
+            color: black;
+            background-size: 100% 100%;
+        }
+        
+        .admin-menu-dropdown button:hover {
+            background: #FFDAB9;
+            color: red;
+            border: 1px solid green;
+        }
+        
+        .admin-nav-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .chat-box {
+                height: 60vh;
+                width: 95%;
+            }
+            
+            .admin-chat-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .admin-user-list {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-right: 0;
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+                max-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Panel (visible by default) -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2 class="admin-title"><i class="fas fa-user-shield"></i> Management window ©JBR™</h2>
+            <button id="closePanel" class="btn-danger"><i class="fas fa-sign-out-alt"></i> Exit</button>
+        </div>
+        
+        <div class="admin-controls">
+            <div class="admin-nav-btns">
+                <button id="backToUsers" class="btn-success"><i class="fas fa-users"></i> Users</button>
+                <button id="restoreUsersBtn" class="btn-warning"><i class="fas fa-trash-restore"></i> Restore Users</button>
+            </div>
+            <div class="admin-menu-btn">
+                <button id="adminMenuBtn" class="btn-success"><i class="fas fa-cog"></i> Menu</button>
+                <div class="admin-menu-dropdown" id="adminMenuDropdown">
+                    <button id="viewAllChats"><i class="fas fa-comments"></i> View All Chats</button>
+                    <button id="filterByUser"><i class="fas fa-search"></i> Filter by User</button>
+                    <button id="exportChats"><i class="fas fa-file-export"></i> Export Chats</button>
+                    <button id="clearChat"><i class="fas fa-trash"></i> Clear Chat</button>
+                    <button id="systemStatusBtn"><i class="fas fa-broadcast-tower"></i> System Status</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="admin-chat-container">
+            <div class="admin-user-list">
+                <h3 class="section-title"><i class="fas fa-users"></i> Active Users</h3>
+                <div class="user-list" id="userList">
+                    <div class="user-item">Loading users...</div>
+                </div>
+            </div>
+            
+            <div class="admin-chat-area">
+                <div class="admin-chat-box" id="adminChatBox">
+                    <div class="message admin">
+                        <div>Select a user from the list to start chatting</div>
+                        <div class="timestamp">System</div>
+                    </div>
+                </div>
+                
+<div class="admin-input-area">
+    <textarea id="adminMessageInput" placeholder="Type your message..." rows="1"></textarea>
+
+<script>
+  const adminTextarea = document.getElementById("adminMessageInput");
+
+  adminTextarea.addEventListener("input", function() {
+    // Save cursor position
+    const cursorPos = adminTextarea.selectionStart;
+    const currentValue = adminTextarea.value;
+    
+    // Process text (preserving manual line breaks)
+    const newValue = currentValue
+      .split('\n')
+      .map(line => line.match(/.{1,30}/g)?.join('\n') || '')
+      .join('\n');
+    
+    // Only update if changed
+    if (newValue !== currentValue) {
+      adminTextarea.value = newValue;
+      
+      // Adjust cursor position for added line breaks
+      const addedBreaks = (newValue.match(/\n/g) || []).length - 
+                         (currentValue.match(/\n/g) || []).length;
+      adminTextarea.selectionStart = adminTextarea.selectionEnd = cursorPos + addedBreaks;
+    }
+  });
+
+  // Prevent typing beyond 30 chars in a line
+  adminTextarea.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") return;
+    
+    const pos = this.selectionStart;
+    const lineStart = this.value.lastIndexOf('\n', pos - 1) + 1;
+    const lineEnd = this.value.indexOf('\n', pos);
+    const lineLength = (lineEnd === -1 ? this.value.length : lineEnd) - lineStart;
+    
+    if (lineLength >= 30 && pos >= lineStart + 30) {
+      e.preventDefault();
+    }
+  });
+</script>
+                    <button id="adminSendButton"><i class="fa-solid fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Dialogs -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">System Status</h3>
+                <button class="modal-close" id="closeStatusModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="status-toggle" style="margin-bottom: 15px;">
+                    <span>Live Support Status:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="statusToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="statusMessageContainer">
+                    <input type="text" id="statusMessageInput" placeholder="Custom status message" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelStatus" class="btn-danger">Cancel</button>
+                <button id="updateStatusBtn" class="btn-success">Update</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="filterModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Filter by User</h3>
+                <button class="modal-close" id="closeFilterModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="filterUserId" placeholder="Enter user ID" class="modal-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+            </div>
+            <div class="modal-footer">
+                <button id="cancelFilter" class="btn-danger">Cancel</button>
+                <button id="applyFilter" class="btn-success">Apply</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmModalTitle">Confirm Action</h3>
+                <button class="modal-close" id="closeConfirmModal">&times;</button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+                Are you sure you want to perform this action?
+            </div>
+            <div class="modal-footer">
+                <button id="cancelConfirm" class="btn-danger">Cancel</button>
+                <button id="proceedConfirm" class="btn-success">Proceed</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="restoreUsersModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Restore Users</h3>
+                <button class="modal-close" id="closeRestoreModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="user-list" id="deletedUserList" style="max-height: 300px; overflow-y: auto;">
+                    <div class="user-item">Loading deleted users...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeRestoreBtn" class="btn-danger">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
+    
+   <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ-znvqufe3kTB_sPxQUiOdmbjXm00D8c",
+            authDomain: "customerchat-88407.firebaseapp.com",
+            databaseURL: "https://customerchat-88407-default-rtdb.firebaseio.com",
+            projectId: "customerchat-88407",
+            storageBucket: "customerchat-88407.appspot.com",
+            messagingSenderId: "1094190373370",
+            appId: "1:1094190373370:web:9ef8834bb5c1d7f84c2c43"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
+        // DOM elements
+        const adminPanel = document.getElementById('adminPanel');
+        const closePanel = document.getElementById('closePanel');
+        const autoReplyOptions = document.querySelectorAll('.auto-reply-option');
+        const statusBadge = document.getElementById('statusBadge');
+        const statusToggle = document.getElementById('statusToggle');
+        const statusMessageContainer = document.getElementById('statusMessageContainer');
+        const statusMessageInput = document.getElementById('statusMessageInput');
+        const updateStatusBtn = document.getElementById('updateStatusBtn');
+        const viewAllChats = document.getElementById('viewAllChats');
+        const filterByUser = document.getElementById('filterByUser');
+        const exportChats = document.getElementById('exportChats');
+        const userList = document.getElementById('userList');
+        const clearChat = document.getElementById('clearChat');
+        const adminChatBox = document.getElementById('adminChatBox');
+        const adminMessageInput = document.getElementById('adminMessageInput');
+        const adminSendButton = document.getElementById('adminSendButton');
+        const backToUsers = document.getElementById('backToUsers');
+        const restoreUsersBtn = document.getElementById('restoreUsersBtn');
+        const adminMenuBtn = document.getElementById('adminMenuBtn');
+        const adminMenuDropdown = document.getElementById('adminMenuDropdown');
+        const systemStatusBtn = document.getElementById('systemStatusBtn');
+        
+        // Modal elements
+        const statusModal = document.getElementById('statusModal');
+        const closeStatusModal = document.getElementById('closeStatusModal');
+        const cancelStatus = document.getElementById('cancelStatus');
+        const filterModal = document.getElementById('filterModal');
+        const closeFilterModal = document.getElementById('closeFilterModal');
+        const cancelFilter = document.getElementById('cancelFilter');
+        const applyFilter = document.getElementById('applyFilter');
+        const filterUserId = document.getElementById('filterUserId');
+        const confirmModal = document.getElementById('confirmModal');
+        const closeConfirmModal = document.getElementById('closeConfirmModal');
+        const cancelConfirm = document.getElementById('cancelConfirm');
+        const proceedConfirm = document.getElementById('proceedConfirm');
+        const confirmModalTitle = document.getElementById('confirmModalTitle');
+        const confirmModalBody = document.getElementById('confirmModalBody');
+        const restoreUsersModal = document.getElementById('restoreUsersModal');
+        const closeRestoreModal = document.getElementById('closeRestoreModal');
+        const closeRestoreBtn = document.getElementById('closeRestoreBtn');
+        const deletedUserList = document.getElementById('deletedUserList');
+
+        // Track selected file and admin state
+        let selectedFile = null;
+        let isAdmin = true; // Set to true by default for admin access
+        let isTyping = false;
+        let currentUserId = null;
+        let currentFilterUserId = null;
+        let activeUsers = {};
+        let messagesData = {};
+        let deletedUsers = {};
+        let blockedUsers = {};
+        let selectedAdminUserId = null;
+        let longPressTimer = null;
+        let pendingAction = null;
+        
+        // Generate a 10-digit random UID
+        function generateUID() {
+            return Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        }
+        
+        // Initialize user ID
+        function initializeUserId() {
+            currentUserId = localStorage.getItem('userId');
+            if (!currentUserId) {
+                currentUserId = generateUID();
+                localStorage.setItem('userId', currentUserId);
+            }
+            
+            // Track user activity
+            database.ref('active_users/' + currentUserId).set({
+                lastActive: firebase.database.ServerValue.TIMESTAMP,
+                isAdmin: true // Set as admin
+            });
+            
+            // Remove user from active list when they leave
+            window.addEventListener('beforeunload', function() {
+                database.ref('active_users/' + currentUserId).remove();
+            });
+        }
+        
+        // Auto-resize textarea
+        adminMessageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Admin menu toggle
+        adminMenuBtn.addEventListener('click', function() {
+            adminMenuDropdown.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!adminMenuBtn.contains(e.target) && !adminMenuDropdown.contains(e.target)) {
+                adminMenuDropdown.classList.remove('show');
+            }
+        });
+
+        // Close admin panel
+        closePanel.addEventListener('click', function() {
+            isAdmin = false;
+            adminPanel.classList.remove('active');
+            
+            // Mark user as non-admin in active users
+            database.ref('active_users/' + currentUserId).update({
+                isAdmin: false
+            });
+        });
+        
+        // Back to users list
+        backToUsers.addEventListener('click', function() {
+            selectedAdminUserId = null;
+            adminChatBox.innerHTML = '<div class="message admin"><div>Select a user from the list to start chatting</div><div class="timestamp">System</div></div>';
+            document.querySelectorAll('.user-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        });
+        
+        // Restore users modal
+        restoreUsersBtn.addEventListener('click', function() {
+            restoreUsersModal.classList.add('active');
+            loadDeletedUsers();
+        });
+        
+        closeRestoreModal.addEventListener('click', function() {
+            restoreUsersModal.classList.remove('active');
+        });
+        
+        closeRestoreBtn.addEventListener('click', function() {
+            restoreUsersModal.classList.remove('active');
+        });
+
+        // System status modal
+        systemStatusBtn.addEventListener('click', function() {
+            statusModal.classList.add('active');
+        });
+        
+        closeStatusModal.addEventListener('click', function() {
+            statusModal.classList.remove('active');
+        });
+        
+        cancelStatus.addEventListener('click', function() {
+            statusModal.classList.remove('active');
+        });
+        
+        // Status toggle
+        statusToggle.addEventListener('change', function() {
+            if (this.checked) {
+                statusBadge.className = 'status-badge status-live';
+                statusBadge.textContent = 'Live';
+            } else {
+                statusBadge.className = 'status-badge status-offline';
+                statusBadge.textContent = 'Offline';
+            }
+        });
+        
+        // Update status message
+        updateStatusBtn.addEventListener('click', function() {
+            const message = statusMessageInput.value.trim();
+            if (message) {
+                statusBadge.textContent = message;
+                statusMessageInput.value = '';
+                statusModal.classList.remove('active');
+                showToast('Status updated successfully');
+            }
+        });
+        
+        // Filter modal handlers
+        filterByUser.addEventListener('click', function(e) {
+            e.preventDefault();
+            filterModal.classList.add('active');
+            filterUserId.focus();
+        });
+        
+        closeFilterModal.addEventListener('click', function() {
+            filterModal.classList.remove('active');
+            filterUserId.value = '';
+        });
+        
+        cancelFilter.addEventListener('click', function() {
+            filterModal.classList.remove('active');
+            filterUserId.value = '';
+        });
+        
+        applyFilter.addEventListener('click', function() {
+            const userId = filterUserId.value.trim();
+            if (userId) {
+                currentFilterUserId = userId;
+                loadMessagesForUser(userId);
+                filterModal.classList.remove('active');
+                filterUserId.value = '';
+            }
+        });
+        
+        // View all chats
+        viewAllChats.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentFilterUserId = null;
+            loadAllMessages();
+            showToast('Showing all messages');
+        });
+        
+        // Export chats
+        exportChats.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (isAdmin) {
+                exportChatsToCSV();
+            }
+        });
+        
+        // Clear chat
+        clearChat.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (isAdmin) {
+                confirmAction(
+                    'Clear Chat History',
+                    'Are you sure you want to clear all messages? This action cannot be undone.',
+                    function() {
+                        if (currentFilterUserId) {
+                            // Clear only messages for the filtered user
+                            database.ref('messages').orderByChild('userId').equalTo(currentFilterUserId).once('value', (snapshot) => {
+                                snapshot.forEach((child) => {
+                                    child.ref.remove();
+                                });
+                                showToast(`Cleared chat history for user ${currentFilterUserId}`);
+                            });
+                        } else {
+                            // Clear all messages
+                            database.ref('messages').remove();
+                            showToast('Cleared all chat history');
+                        }
+                    }
+                );
+            }
+        });
+        
+        // Confirm action modal
+        function confirmAction(title, message, callback) {
+            confirmModalTitle.textContent = title;
+            confirmModalBody.textContent = message;
+            confirmModal.classList.add('active');
+            
+            proceedConfirm.onclick = function() {
+                confirmModal.classList.remove('active');
+                if (callback) callback();
+            };
+        }
+        
+        closeConfirmModal.addEventListener('click', function() {
+            confirmModal.classList.remove('active');
+        });
+        
+        cancelConfirm.addEventListener('click', function() {
+            confirmModal.classList.remove('active');
+        });
+
+        async function sendAdminMessage() {
+            if (!selectedAdminUserId) {
+                showToast('Please select a user to chat with', 'error');
+                return;
+            }
+            
+            const messageText = adminMessageInput.value.trim();
+            if (!messageText && !selectedFile) return;
+
+            const messageData = {
+                text: messageText,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                userId: currentUserId, // Admin's user ID
+                isAdmin: true,
+                recipientUserId: selectedAdminUserId // The user admin is chatting with
+            };
+
+            if (selectedFile) {
+                try {
+                    // Show typing indicator during upload
+                    showTypingIndicator(true, true);
+                    
+                    // Upload file to Firebase Storage
+                    const storageRef = storage.ref('chat_files/' + selectedFile.name + '-' + Date.now());
+                    const uploadTask = await storageRef.put(selectedFile);
+                    const downloadURL = await uploadTask.ref.getDownloadURL();
+                    
+                    messageData.fileUrl = downloadURL;
+                    messageData.fileName = selectedFile.name;
+                    messageData.fileType = selectedFile.type.includes('image') ? 'image' : 'video';
+                } catch (error) {
+                    console.error("Error uploading file:", error);
+                    showToast('Error uploading file. Please try again.', 'error');
+                    return;
+                } finally {
+                    showTypingIndicator(false, true);
+                }
+            }
+
+            // Push message to Firebase
+            try {
+                await database.ref('messages').push(messageData);
+                adminMessageInput.value = '';
+                selectedFile = null;
+                fileName.textContent = '';
+                fileInput.value = '';
+                adminMessageInput.style.height = 'auto';
+                
+                // Update user last active time
+                database.ref('active_users/' + currentUserId).update({
+                    lastActive: firebase.database.ServerValue.TIMESTAMP
+                });
+            } catch (error) {
+                console.error("Error sending message:", error);
+                showToast('Error sending message. Please try again.', 'error');
+            }
+        }
+
+        function showTypingIndicator(show, isAdminChat = false) {
+            const targetChatBox = isAdminChat ? adminChatBox : chatBox;
+            const existingIndicator = targetChatBox.querySelector('.typing-indicator');
+            
+            if (show && !existingIndicator) {
+                isTyping = true;
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                indicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                targetChatBox.appendChild(indicator);
+                targetChatBox.scrollTop = targetChatBox.scrollHeight;
+            } else if (!show && existingIndicator) {
+                isTyping = false;
+                existingIndicator.remove();
+            }
+        }
+        
+        function addSystemMessage(text, isAdminChat = false) {
+            const targetChatBox = isAdminChat ? adminChatBox : chatBox;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message admin';
+            messageDiv.innerHTML = `
+                <div><em>${text}</em></div>
+                <div class="timestamp">System Message</div>
+            `;
+            targetChatBox.appendChild(messageDiv);
+            targetChatBox.scrollTop = targetChatBox.scrollHeight;
+        }
+        
+        function loadAllMessages() {
+            adminChatBox.innerHTML = '';
+            database.ref('messages').once('value', (snapshot) => {
+                messagesData = snapshot.val() || {};
+                const messagesArray = [];
+                
+                for (const key in messagesData) {
+                    messagesArray.push({
+                        id: key,
+                        ...messagesData[key]
+                    });
+                }
+                
+                // Sort by timestamp
+                messagesArray.sort((a, b) => a.timestamp - b.timestamp);
+                
+                // Display all messages
+                messagesArray.forEach(msg => {
+                    displayAdminMessage(msg);
+                });
+            });
+        }
+        
+        function loadMessagesForUser(userId) {
+            adminChatBox.innerHTML = '';
+            database.ref('messages').orderByChild('userId').equalTo(userId).once('value', (snapshot) => {
+                const userMessages = snapshot.val() || {};
+                const messagesArray = [];
+                
+                for (const key in userMessages) {
+                    messagesArray.push({
+                        id: key,
+                        ...userMessages[key]
+                    });
+                }
+                
+                // Sort by timestamp
+                messagesArray.sort((a, b) => a.timestamp - b.timestamp);
+                
+                // Display user messages
+                messagesArray.forEach(msg => {
+                    displayAdminMessage(msg);
+                });
+                
+                if (messagesArray.length === 0) {
+                    addSystemMessage(`No messages found for user ${userId}`, true);
+                }
+            });
+        }
+        
+        function loadActiveUsers() {
+            database.ref('active_users').once('value', (snapshot) => {
+                activeUsers = snapshot.val() || {};
+                updateActiveUsersList(activeUsers);
+            });
+        }
+        
+        function loadDeletedUsers() {
+            database.ref('deleted_users').once('value', (snapshot) => {
+                deletedUsers = snapshot.val() || {};
+                updateDeletedUsersList(deletedUsers);
+            });
+        }
+        
+        function loadBlockedUsers() {
+            database.ref('blocked_users').once('value', (snapshot) => {
+                blockedUsers = snapshot.val() || {};
+            });
+        }
+        
+        function updateActiveUsersList(users) {
+            userList.innerHTML = '';
+            
+            if (!users || Object.keys(users).length === 0) {
+                userList.innerHTML = '<div class="user-item">No active users</div>';
+                return;
+            }
+            
+            // Convert to array and sort by last active (newest first)
+            const usersArray = Object.entries(users).map(([id, data]) => ({ id, ...data }));
+            usersArray.sort((a, b) => (b.lastActive || 0) - (a.lastActive || 0));
+            
+            usersArray.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                if (user.isAdmin) userItem.classList.add('admin');
+                if (blockedUsers[user.id]) userItem.classList.add('blocked');
+                if (deletedUsers[user.id]) userItem.classList.add('deleted');
+                
+                userItem.innerHTML = `
+                    ${user.isAdmin ? '<i class="fas fa-user-shield"></i> Admin' : '<i class="fas fa-user"></i> User'} 
+                    <span class="user-id-badge">${user.id}</span>
+                    <small style="float: right;">${formatTime(user.lastActive)}</small>
+                `;
+                
+                // Click to chat with user
+                userItem.addEventListener('click', function() {
+                    if (user.id === currentUserId) return; // Can't chat with self
+                    
+                    selectedAdminUserId = user.id;
+                    adminChatBox.innerHTML = '';
+                    loadMessagesForAdminUser(user.id);
+                    
+                    // Highlight selected user
+                    document.querySelectorAll('.user-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    userItem.classList.add('active');
+                });
+                
+                // Long press for admin actions
+                userItem.addEventListener('mousedown', function(e) {
+                    if (user.id === currentUserId) return; // Can't perform actions on self
+                    
+                    longPressTimer = setTimeout(() => {
+                        showUserActionsMenu(user.id, e);
+                    }, 1000);
+                });
+                
+                userItem.addEventListener('mouseup', function() {
+                    clearTimeout(longPressTimer);
+                });
+                
+                userItem.addEventListener('mouseleave', function() {
+                    clearTimeout(longPressTimer);
+                });
+                
+                userList.appendChild(userItem);
+            });
+        }
+        
+        function updateDeletedUsersList(users) {
+            deletedUserList.innerHTML = '';
+            
+            if (!users || Object.keys(users).length === 0) {
+                deletedUserList.innerHTML = '<div class="user-item">No deleted users</div>';
+                return;
+            }
+            
+            // Convert to array and sort by deletion time (newest first)
+            const usersArray = Object.entries(users).map(([id, data]) => ({ id, ...data }));
+            usersArray.sort((a, b) => (b.deletedAt || 0) - (a.deletedAt || 0));
+            
+            usersArray.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item deleted';
+                
+                userItem.innerHTML = `
+                    <i class="fas fa-user-slash"></i> User 
+                    <span class="user-id-badge">${user.id}</span>
+                    <small style="float: right;">Deleted ${formatTime(user.deletedAt)}</small>
+                    <div style="margin-top: 5px;">
+                        <button class="btn-success" style="padding: 5px 10px; font-size: 12px;" data-user-id="${user.id}">
+                            <i class="fas fa-trash-restore"></i> Restore
+                        </button>
+                    </div>
+                `;
+                
+                // Restore user button
+                const restoreBtn = userItem.querySelector('button');
+                restoreBtn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    restoreUser(userId);
+                });
+                
+                deletedUserList.appendChild(userItem);
+            });
+        }
+        
+        function showUserActionsMenu(userId, event) {
+            event.preventDefault();
+            
+            const isBlocked = blockedUsers[userId];
+            const isDeleted = deletedUsers[userId];
+            
+            const menu = document.createElement('div');
+            menu.style.position = 'fixed';
+            menu.style.left = `${event.clientX}px`;
+            menu.style.top = `${event.clientY}px`;
+            menu.style.backgroundColor = 'white';
+            menu.style.borderRadius = '8px';
+            menu.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+            menu.style.zIndex = '1000';
+            menu.style.padding = '10px';
+            menu.style.minWidth = '200px';
+            
+            if (!isDeleted) {
+                menu.innerHTML = `
+                    <button style="width: 100%; text-align: left; padding: 8px; border: none; background: none; cursor: pointer;" data-action="block">
+                        <i class="fas fa-ban"></i> ${isBlocked ? 'Unblock' : 'Block'} User
+                    </button>
+                    <button style="width: 100%; text-align: left; padding: 8px; border: none; background: none; cursor: pointer;" data-action="delete">
+                        <i class="fas fa-trash"></i> Delete User
+                    </button>
+                `;
+            } else {
+                menu.innerHTML = `
+                    <button style="width: 100%; text-align: left; padding: 8px; border: none; background: none; cursor: pointer;" data-action="restore">
+                        <i class="fas fa-trash-restore"></i> Restore User
+                    </button>
+                `;
+            }
+            
+            document.body.appendChild(menu);
+            
+            // Close menu when clicking outside
+            const closeMenu = function(e) {
+                if (!menu.contains(e.target)) {
+                    document.body.removeChild(menu);
+                    document.removeEventListener('click', closeMenu);
+                }
+            };
+            
+            setTimeout(() => {
+                document.addEventListener('click', closeMenu);
+            }, 100);
+            
+            // Handle menu actions
+            menu.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    handleUserAction(userId, action);
+                    document.body.removeChild(menu);
+                });
+            });
+        }
+        
+        function handleUserAction(userId, action) {
+            switch (action) {
+                case 'block':
+                    const isBlocked = blockedUsers[userId];
+                    confirmAction(
+                        isBlocked ? 'Unblock User' : 'Block User',
+                        `Are you sure you want to ${isBlocked ? 'unblock' : 'block'} this user?`,
+                        function() {
+                            if (isBlocked) {
+                                database.ref('blocked_users/' + userId).remove();
+                            } else {
+                                database.ref('blocked_users/' + userId).set(true);
+                            }
+                            showToast(`User ${isBlocked ? 'unblocked' : 'blocked'} successfully`);
+                        }
+                    );
+                    break;
+                    
+                case 'delete':
+                    confirmAction(
+                        'Delete User',
+                        'Are you sure you want to delete this user? Their messages will be preserved but they won\'t be able to send new messages.',
+                        function() {
+                            database.ref('deleted_users/' + userId).set({
+                                deletedAt: firebase.database.ServerValue.TIMESTAMP,
+                                deletedBy: currentUserId
+                            });
+                            database.ref('active_users/' + userId).remove();
+                            showToast('User deleted successfully');
+                        }
+                    );
+                    break;
+                    
+                case 'restore':
+                    restoreUser(userId);
+                    break;
+            }
+        }
+        
+        function restoreUser(userId) {
+            confirmAction(
+                'Restore User',
+                'Are you sure you want to restore this user?',
+                function() {
+                    database.ref('deleted_users/' + userId).remove();
+                    showToast('User restored successfully');
+                }
+            );
+        }
+        
+        function loadMessagesForAdminUser(userId) {
+            database.ref('messages').orderByChild('userId').equalTo(userId).once('value', (snapshot) => {
+                const userMessages = snapshot.val() || {};
+                const messagesArray = [];
+                
+                for (const key in userMessages) {
+                    messagesArray.push({
+                        id: key,
+                        ...userMessages[key]
+                    });
+                }
+                
+                // Also get admin replies to this user
+                database.ref('messages').orderByChild('recipientUserId').equalTo(userId).once('value', (replySnapshot) => {
+                    const replyMessages = replySnapshot.val() || {};
+                    
+                    for (const key in replyMessages) {
+                        messagesArray.push({
+                            id: key,
+                            ...replyMessages[key]
+                        });
+                    }
+                    
+                    // Sort all messages by timestamp
+                    messagesArray.sort((a, b) => a.timestamp - b.timestamp);
+                    
+                    // Display messages in admin chat box
+                    adminChatBox.innerHTML = '';
+                    messagesArray.forEach(msg => {
+                        displayAdminMessage(msg);
+                    });
+                    
+                    if (messagesArray.length === 0) {
+                        addSystemMessage(`No messages found for user ${userId}`, true);
+                    }
+                });
+            });
+        }
+        
+        function displayAdminMessage(message) {
+            // Check if message is deleted
+            const isDeleted = message.deleted === true;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${message.userId === currentUserId ? 'admin' : 'customer'}`;
+            if (isDeleted) {
+                messageDiv.classList.add('message-deleted');
+            }
+            
+            messageDiv.dataset.messageId = message.id;
+            
+            let content = '';
+            if (message.text) {
+                if (isDeleted) {
+                    content += `<div class="message-deleted-text">[DELETED] ${message.text}</div>`;
+                } else {
+                    content += `<div>${message.text}</div>`;
+                }
+            }
+            
+            if (message.fileUrl && !isDeleted) {
+                if (message.fileType === 'image') {
+                    content += `<img src="${message.fileUrl}" alt="${message.fileName || 'Image'}">`;
+                } else {
+                    content += `<video controls><source src="${message.fileUrl}" type="${message.fileType || 'video/mp4'}">Your browser does not support the video tag.</video>`;
+                }
+            }
+            
+            const date = new Date(message.timestamp);
+            const timeString = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            content += `<div class="timestamp">${timeString}`;
+            
+            if (message.userId === currentUserId) {
+                content += ` | You`;
+            } else {
+                content += ` | User`;
+            }
+            
+            content += `</div>`;
+            
+            messageDiv.innerHTML = content;
+            
+            // Add double click handler to delete messages
+            if (!isDeleted) {
+                messageDiv.addEventListener('dblclick', function() {
+                    confirmAction(
+                        'Delete Message',
+                        'Are you sure you want to delete this message?',
+                        function() {
+                            database.ref('messages/' + message.id).update({
+                                deleted: true,
+                                deletedBy: currentUserId,
+                                deletedAt: firebase.database.ServerValue.TIMESTAMP
+                            });
+                        }
+                    );
+                });
+            }
+            
+            adminChatBox.appendChild(messageDiv);
+            adminChatBox.scrollTop = adminChatBox.scrollHeight;
+        }
+        
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Just now';
+            
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / (1000 * 60));
+            
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
+        
+        function exportChatsToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Timestamp,User ID,Message,Is Admin,File URL\n";
+            
+            for (const key in messagesData) {
+                const msg = messagesData[key];
+                const date = new Date(msg.timestamp);
+                const timestamp = date.toLocaleString();
+                const userId = msg.userId || '';
+                const text = msg.text ? '"' + msg.text.replace(/"/g, '""') + '"' : '';
+                const isAdmin = msg.isAdmin ? 'Yes' : 'No';
+                const fileUrl = msg.fileUrl || '';
+                
+                csvContent += `${timestamp},${userId},${text},${isAdmin},${fileUrl}\n`;
+            }
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "chat_export_" + new Date().toISOString().slice(0,10) + ".csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('Chat exported successfully');
+        }
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = type === 'error' ? 'var(--danger-color)' : 'var(--success-color)';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            toast.style.zIndex = '1000';
+            toast.style.animation = 'fadeIn 0.3s ease';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+            
+            // Add keyframes for animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Initialize user ID
+        initializeUserId();
+        loadBlockedUsers();
+        
+        // Listen for new messages
+        database.ref('messages').on('child_added', (snapshot) => {
+            const message = {
+                id: snapshot.key,
+                ...snapshot.val()
+            };
+            
+            // Store message in local cache
+            messagesData[message.id] = message;
+            
+            // Display in admin chat box if relevant
+            if (selectedAdminUserId && 
+                (message.userId === selectedAdminUserId || message.recipientUserId === selectedAdminUserId)) {
+                displayAdminMessage(message);
+            }
+        });
+        
+        // Listen for message updates (for deletion)
+        database.ref('messages').on('child_changed', (snapshot) => {
+            const message = {
+                id: snapshot.key,
+                ...snapshot.val()
+            };
+            
+            // Update message in local cache
+            messagesData[message.id] = message;
+            
+            // Find and update the message in the UI
+            const messageElement = document.querySelector(`[data-message-id="${message.id}"]`);
+            if (messageElement) {
+                messageElement.remove();
+                
+                if (selectedAdminUserId && 
+                    (message.userId === selectedAdminUserId || message.recipientUserId === selectedAdminUserId)) {
+                    displayAdminMessage(message);
+                }
+            }
+        });
+        
+        // Listen for active users
+        database.ref('active_users').on('value', (snapshot) => {
+            activeUsers = snapshot.val() || {};
+            updateActiveUsersList(activeUsers);
+        });
+        
+        // Listen for deleted users
+        database.ref('deleted_users').on('value', (snapshot) => {
+            deletedUsers = snapshot.val() || {};
+            if (restoreUsersModal.classList.contains('active')) {
+                updateDeletedUsersList(deletedUsers);
+            }
+        });
+        
+        // Listen for blocked users
+        database.ref('blocked_users').on('value', (snapshot) => {
+            blockedUsers = snapshot.val() || {};
+        });
+        
+        // Load existing messages when page loads
+        database.ref('messages').once('value', (snapshot) => {
+            messagesData = snapshot.val() || {};
+        });
+    </script>
+    <!-- Loading Screen -->
+<div id="loadingScreen" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000428, #004e92);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: #fdbd01;
+    font-family: 'Poppins', sans-serif;
+">
+    <img src="https://cdn-icons-png.flaticon.com/512/1687/1687106.png" 
+         alt="Loading Logo" 
+         style="width: 200px; height: 200px; margin-bottom: 20px; animation: pulse 1s infinite;">
+    
+    <h2 style="margin-bottom: 20px; text-align: center;">Loading Admin Panel</h2>
+    
+    <div id="loadingMessages" style="
+        margin-bottom: 30px;
+        min-height: 20px;
+        text-align: center;
+        font-style: italic;
+    ">Initializing application...</div>
+    
+    <div style="width: 80%; max-width: 300px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+        <div id="loadingBar" style="
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        "></div>
+    </div>
+    
+    <div id="loadingPercentage" style="margin-top: 10px;">0%</div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
+
+<script>
+    // Loading screen functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingPercentage = document.getElementById('loadingPercentage');
+        const loadingMessages = document.getElementById('loadingMessages');
+        
+        // List of all external assets to preload
+        const assets = [
+            // Fonts
+            'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            
+            // Background images
+            'https://img.freepik.com/premium-vector/blue-curve-frame-template_53876-174347.jpg',
+            'https://img.freepik.com/free-photo/red-light-round-podium-black-background-mock-up_43614-950.jpg',
+            'https://img.freepik.com/premium-photo/green-watercolor-background-document-1_1259374-238.jpg',
+            'https://img.freepik.com/free-photo/smooth-green-background_53876-108464.jpg',
+            'https://img.freepik.com/free-vector/seamless-gold-rhombus-grid-pattern-black-background_53876-97589.jpg',
+            'https://img.freepik.com/premium-photo/blue-vertical-background-social-media-story-poster-banner-ads-various-design-works_7954-61892.jpg',
+            'https://img.freepik.com/free-vector/white-square-abstract-background_1017-1864.jpg',
+            'https://img.freepik.com/premium-photo/price-tag-text-box-3d-illustration_115990-7734.jpg',
+            'https://img.freepik.com/free-vector/video-game-controls-frame-neon-style-brick-wall_24908-58914.jpg',
+            'https://img.freepik.com/free-vector/abstract-realistic-technology-particle-background_52683-33064.jpg',
+            'https://img.freepik.com/free-vector/realistic-neon-lights-background_23-2148916523.jpg',
+            
+            // Firebase SDKs
+            'https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js',
+            'https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js',
+            'https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js'
+        ];
+        
+        // Status messages to show during loading
+        const statusMessages = [
+            "Loading admin interface...",
+            "Connecting to database...",
+            "Loading user data...",
+            "Almost ready...",
+            "Finalizing setup...",
+            "Admin panel ready!"
+        ];
+        
+        let loadedAssets = 0;
+        let totalAssets = assets.length;
+        let resourcesLoaded = false;
+        let domLoaded = false;
+        
+        function updateLoadingProgress() {
+            loadedAssets++;
+            const progress = Math.min(Math.floor((loadedAssets / totalAssets) * 100), 100);
+            loadingBar.style.width = progress + '%';
+            loadingPercentage.textContent = progress + '%';
+            
+            // Update status message based on progress
+            const messageIndex = Math.min(Math.floor(progress / (100 / (statusMessages.length - 1))), statusMessages.length - 1);
+            loadingMessages.textContent = statusMessages[messageIndex];
+            
+            // Check if everything is loaded
+            if (loadedAssets >= totalAssets && domLoaded) {
+                completeLoading();
+            }
+        }
+        
+        function completeLoading() {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    // Initialize the app now that everything is loaded
+                    if (typeof initializeUserId === 'function') {
+                        initializeUserId();
+                    }
+                    if (typeof loadBlockedUsers === 'function') {
+                        loadBlockedUsers();
+                    }
+                    if (typeof loadActiveUsers === 'function') {
+                        loadActiveUsers();
+                    }
+                }, 2000);
+            }, 3000); // Small delay to show 100%
+        }
+        
+        // Function to preload images
+        function preloadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = url;
+                img.onload = resolve;
+                img.onerror = resolve; // Even if error, we still count it as loaded
+            });
+        }
+        
+        // Function to preload CSS
+        function preloadCSS(url) {
+            return new Promise((resolve, reject) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = url;
+                link.onload = resolve;
+                link.onerror = resolve;
+                document.head.appendChild(link);
+            });
+        }
+        
+        // Function to preload JS
+        function preloadJS(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = resolve;
+                script.onerror = resolve;
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Start preloading all assets
+        async function preloadAllAssets() {
+            const promises = [];
+            
+            assets.forEach(asset => {
+                const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(asset);
+                const isCSS = /\.css$/i.test(asset);
+                const isJS = /\.js$/i.test(asset);
+                
+                if (isImage) {
+                    promises.push(preloadImage(asset).then(updateLoadingProgress));
+                } else if (isCSS) {
+                    promises.push(preloadCSS(asset).then(updateLoadingProgress));
+                } else if (isJS) {
+                    promises.push(preloadJS(asset).then(updateLoadingProgress));
+                } else {
+                    // For other types, just count them as loaded
+                    promises.push(Promise.resolve().then(updateLoadingProgress));
+                }
+            });
+            
+            await Promise.all(promises);
+            resourcesLoaded = true;
+            
+            if (domLoaded) {
+                completeLoading();
+            }
+        }
+        
+        // Mark DOM as loaded
+        domLoaded = true;
+        
+        // Start preloading
+        preloadAllAssets();
+    });
+</script>
+</body>
+</html>
